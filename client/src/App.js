@@ -7,9 +7,12 @@ import history from './utils/history';
 
 function App() {
   localStorage.setItem('fetchClusters', true);
+  let wdawd;
+
   return (
     <Router history={history}>
       <Routes location={baseUrl} />
+      <div>{wdawd.awdgeegsf}</div>
     </Router>
   );
 }
