@@ -1,4 +1,4 @@
-//import React from 'react';
+import React from 'react';
 import './App.scss';
 import { BrowserRouter as Router, HashRouter } from 'react-router-dom';
 import { baseUrl, uriClusters } from './utils/endpoints';
