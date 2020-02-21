@@ -31,9 +31,15 @@ pipeline{
             }
         }
 
+        stage('client') {
+            steps{
+                sh "./gradlew webpack"
+            }
+        }
+
         stage('build') {
             steps{
-                sh "./gradlew assembleServerAndClient"
+                sh "./gradlew build"
             }
         }
 
