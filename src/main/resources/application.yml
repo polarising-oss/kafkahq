@@ -14,8 +14,8 @@ micronaut:
         enabled: true
         mapping: "/**"
         paths: "classpath:static"
-    security:
-      enabled: false
+  security:
+    enabled: false
     endpoints:
       login:
         enabled: true
@@ -69,26 +69,12 @@ jackson:
 
 kafkahq:
   connections:
-    my-cluster:
-      properties:
-        bootstrap.servers: localhost:9092
-      schema-registry:
-        url: "localhost:8085"
-      connect:
-        - name: connect-1
-          url: "http://localhost:8083"
-        - name: connect-2
-          url: "http://localhost:8082"
-    my-cluster2:
-      properties:
-        bootstrap.servers: localhost:9092
-      schema-registry:
-        url: "localhost:8086"
-      connect:
-        - name: connect-3
-          url: "http://localhost:8081"
-        - name: connect-4
-          url: "http://localhost:8085"
+    my-cluster-plain-text: # url friendly name for the cluster (letter, number, _, -, ... dot are not allowed here)
+      properties: # standard kafka properties (optional)
+        bootstrap.servers: "localhost:9092"
+    my-cluster-plain-text2: # url friendly name for the cluster (letter, number, _, -, ... dot are not allowed here)
+      properties: # standard kafka properties (optional)
+        bootstrap.servers: "localhost:9092"
   server:
     base-path: ""
     access-log:
