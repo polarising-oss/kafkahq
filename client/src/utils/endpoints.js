@@ -14,7 +14,9 @@ export const uriConnects = id => {
 export const uriConnectDefinitions = (clusterId, connectId) => {
   return `${apiUrl}/connect/definitions?clusterId=${clusterId}&connectId=${connectId}`;
 };
-
+export const uriConnectPlugins= (clusterId, connectId) => {
+  return `${apiUrl}/connect/plugins?clusterId=${clusterId}&connectId=${connectId}`;
+};
 export const uriDeleteDefinition = () => {
   return `${apiUrl}/connect/delete`;
 };

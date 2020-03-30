@@ -1,8 +1,10 @@
 package org.kafkahq.service;
 
+import org.kafkahq.models.ConnectPlugin;
 import org.kafkahq.modules.KafkaModule;
 import org.kafkahq.repositories.ConnectRepository;
 import org.kafkahq.service.dto.connect.ConnectDefinitionDTO;
+import org.kafkahq.service.dto.connect.ConnectPluginDTO;
 import org.kafkahq.service.dto.connect.DeleteConnectDefinitionDTO;
 import org.kafkahq.service.mapper.ConnectMapper;
 
@@ -46,4 +48,22 @@ public class ConnectService {
                 deleteConnectDefinitionDTO.getDefinitionId()
         );
     }
+
+   public List<ConnectPluginDTO> getConnectPlugins(String clusterId, String connectId){
+    List<ConnectPlugin> plugins= connectRepository.getPlugins(clusterId,connectId);
+    List<ConnectPluginDTO> pluginsDTO=new ArrayList<>();
+    for (int i=0; i< plugins.size();i++){
+        ConnectPluginDTO plugin= connectMapper.fromConnectPluginToConnectPluginDTO(plugins.get(i));
+        pluginsDTO.add(plugin);
+    }
+    return pluginsDTO;
+
+   }
+/*
+   public ConnectPluginDTO getConnectPlugin (String clusterId, String connectId, String className) {
+           return connectMapper.fromConnectPluginToConnectPluginDTO(connectRepository.getPlugin(clusterId, connectId, className));
+
+   }
+
+ */
 }

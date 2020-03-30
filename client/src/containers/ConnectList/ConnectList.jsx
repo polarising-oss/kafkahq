@@ -242,7 +242,14 @@ class ConnectList extends Component {
           }}
         />
         <aside>
-          <Link to={`/${clusterId}/connect/create`} class="btn btn-primary">
+          <Link
+            to={{
+              pathname: `/${clusterId}/connect/create`,
+              ConnectId: connectId,
+              ClusterId: clusterId
+            }}
+            class="btn btn-primary"
+          >
             Create a definition
           </Link>
         </aside>

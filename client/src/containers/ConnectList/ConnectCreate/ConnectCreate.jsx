@@ -4,7 +4,17 @@ import './styles.scss';
 import Header from '../../Header/Header';
 
 class ConnectCreate extends Component {
-  state = {};
+  state = {
+    ClusterId:this.props.clusterId,
+    ConnectId:this.props.connectId,
+
+  };
+
+  componentDidMount(){
+console.log(this.ConnectId , this.ClusterId);
+  }
+
+  
   render() {
     return (
       <div id="content">

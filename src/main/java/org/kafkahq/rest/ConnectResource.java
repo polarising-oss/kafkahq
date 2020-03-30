@@ -5,6 +5,7 @@ import io.micronaut.http.annotation.Delete;
 import io.micronaut.http.annotation.Get;
 import org.kafkahq.service.ConnectService;
 import org.kafkahq.service.dto.connect.ConnectDefinitionDTO;
+import org.kafkahq.service.dto.connect.ConnectPluginDTO;
 import org.kafkahq.service.dto.connect.DeleteConnectDefinitionDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,4 +46,11 @@ public class ConnectResource {
         );
         this.connectService.deleteConnectDefinition(deleteConnectDefinitionDTO);
     }
+
+    @Get("/connect/plugins")
+    public List<ConnectPluginDTO> fetchConnectPlugins(String clusterId, String connectId) {
+        log.debug("Fetching plugins for connect: {}", connectId);
+        return connectService.getConnectPlugins(clusterId, connectId);
+    }
+
 }
