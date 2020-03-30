@@ -41,12 +41,20 @@ public class ConnectService {
                 .collect(Collectors.toList());
     }
 
-    public void deleteConnectDefinition(DeleteConnectDefinitionDTO deleteConnectDefinitionDTO) {
+    public List<ConnectDefinitionDTO> deleteConnectDefinition(DeleteConnectDefinitionDTO deleteConnectDefinitionDTO) {
         this.connectRepository.delete(
                 deleteConnectDefinitionDTO.getClusterId(),
                 deleteConnectDefinitionDTO.getConnectId(),
                 deleteConnectDefinitionDTO.getDefinitionId()
         );
+
+        return this.connectRepository.getDefinitions(
+                deleteConnectDefinitionDTO.getClusterId(),
+                deleteConnectDefinitionDTO.getConnectId()
+        )
+                .stream()
+                .map(connectDefinition -> connectMapper.fromConnectDefinitionToConnectDefinitionDTO(connectDefinition))
+                .collect(Collectors.toList());
     }
 
    public List<ConnectPluginDTO> getConnectPlugins(String clusterId, String connectId){
