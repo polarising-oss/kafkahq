@@ -247,9 +247,9 @@ class ConnectList extends Component {
         <aside>
           <Link
             to={{
-              pathname: `/${clusterId}/connect/create`,
-              ConnectId: connectId,
-              ClusterId: clusterId
+              pathname: `/${clusterId}/connect/${connectId}/create`,
+              connectId: connectId,
+              clusterId: clusterId
             }}
             class="btn btn-primary"
           >

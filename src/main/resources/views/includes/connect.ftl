@@ -65,7 +65,7 @@
                                             <#if plugin.getImportance() == "HIGH" >
                                                 &nbsp;<i class="fa fa-exclamation text-danger" aria-hidden="true"></i>
                                         <#elseif plugin.getImportance() == "MEDIUM">
-                                                &nbsp;<i class="fa fa-info text-warning" aria-hidden="true"></i>
+                                                &nbsp;<i class="fa fa-exclamation text-danger" aria-hidden="true"></i>
                                             </#if>
                                     </span><br/>
                                     </#if>

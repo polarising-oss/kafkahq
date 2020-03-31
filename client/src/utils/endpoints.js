@@ -14,7 +14,7 @@ export const uriConnects = id => {
 export const uriConnectDefinitions = (clusterId, connectId) => {
   return `${apiUrl}/connect/definitions?clusterId=${clusterId}&connectId=${connectId}`;
 };
-export const uriConnectPlugins= (clusterId, connectId) => {
+export const uriConnectPlugins = (clusterId, connectId) => {
   return `${apiUrl}/connect/plugins?clusterId=${clusterId}&connectId=${connectId}`;
 };
 export const uriDeleteDefinition = () => {
@@ -113,7 +113,8 @@ export const uriNodesLogs = (clusterId, nodeId) => {
 };
 
 export const uriConsumerGroups = (clusterId, view, search, pageNumber) => {
-  return `${apiUrl}/group?clusterId=${clusterId}&view=${view}&search=${search}&pageNumber=${pageNumber}`;
+  return `${apiUrl}/group?clusterId=${clusterId}&view=~
+  ${view}&search=${search}&pageNumber=${pageNumber}`;
 };
 
 export const uriConsumerGroupTopics = (clusterId, groupId) => {
@@ -185,5 +186,6 @@ export default {
   uriConsumerGroupUpdate,
   uriTopicsConfigs,
   uriLatestSchemaVersion,
-  uriSchemaVersions
+  uriSchemaVersions,
+  uriConnectPlugins
 };
