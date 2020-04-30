@@ -101,6 +101,7 @@ class Sidebar extends Component {
           </a>
         </NavText>
       </NavItem>
+
     ));
     const listConnects = allConnects.map(connect => (
       <NavItem eventKey={`cluster/${connect}`} onClick={() => this.changeSelectedConnect(connect)}>
@@ -177,7 +178,7 @@ class Sidebar extends Component {
       selectedTab,
       roles
     } = this.state;
-    const tag = 'Snapshot';
+    const tag = constants.VERSION;
     const { listConnects, listClusters } = this.setClustersAndConnects();
     return (
       <SideNav
