@@ -141,7 +141,7 @@ class Sidebar extends Component {
   }
 
   renderMenuItem(iconClassName, tab, label) {
-    const { selectedCluster, selectedTab } = this.state;
+    const { selectedCluster } = this.state;
     const pathname = window.location.pathname;
     return (
       <NavItem
@@ -176,6 +176,7 @@ class Sidebar extends Component {
     const { listConnects, listClusters } = this.setClustersAndConnects();
     return (
       <SideNav
+        expanded={this.props.expanded}
         onToggle={expanded => {
           this.props.toggleSidebar(expanded);
         }}
