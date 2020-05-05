@@ -151,7 +151,7 @@ class Sidebar extends Component {
           this.setState({ selectedTab: tab });
         }}
       >
-        <NavIcon>
+        <NavIcon >
           {' '}
           <Link to={`/${selectedCluster}/${tab}`}>
             <i className={iconClassName} aria-hidden="true" />
@@ -188,8 +188,6 @@ class Sidebar extends Component {
           defaultSelected={`${constants.TOPIC}`}
           id="khq-sidebar-tabs"
           style={{ background: 'black' }}
-          s
-          defaultActiveKey={selectedTab}
         >
           <NavItem style={{ backgroundColor: 'Black', cursor: 'default' }}>
             <NavIcon></NavIcon>
@@ -211,6 +209,7 @@ class Sidebar extends Component {
             </NavIcon>
             <NavText>
               <Link
+                to=""
                 data-toggle="collapse"
                 aria-expanded={showClusters}
                 className="dropdown-toggle"
