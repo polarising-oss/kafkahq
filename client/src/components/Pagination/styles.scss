@@ -3,7 +3,6 @@
     height: 100%;
     width: 40%;
     vertical-align: middle;
-    margin-left: 0px !important;
 }
 
 .pagination {
@@ -15,13 +14,11 @@
     display: inline-block;
     padding-bottom: 0.6rem;
     padding-top: 0.6rem;
-    margin-left: auto;
 }
 
 .page-number {
     padding-bottom: 0.4rem;
     padding-top: 0.4rem;
-    margin-left: 0px !important;
 }
 
 .page-link {
@@ -30,10 +27,22 @@
 
 .page-input{
     font-size: 12px;
-    min-width: 10px;
-    width:15px;
-    max-width:15px;
+    min-width: 40%;
+    width: 40%;
+    max-width: 40%;
     border-radius: 5%;
+    -ms-box-sizing:content-box;
+    -moz-box-sizing:content-box;
+    -webkit-box-sizing:content-box;
+    box-sizing:content-box;
+}
+
+@media (max-width: 450px) {
+    .page-input{
+        min-width: 60%;
+        width: 40%;
+        max-width: 70%;
+    }
 }
 
 .page-item.before, .page-item.after {
