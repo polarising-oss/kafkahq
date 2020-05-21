@@ -75,7 +75,11 @@ class ConsumerGroupList extends Component {
         this.setState({ selectedCluster, consumerGroups: [], totalPageNumber: 0 });
       }
     } catch (err) {
-      history.replace('/error', { errorData: err });
+      if (err.response && err.response.status === 404) {
+        history.replace('/page-not-found', { errorData: err });
+      } else {
+        history.replace('/error', { errorData: err });
+      }
     } finally {
       history.replace({
         loading: false
@@ -194,14 +198,8 @@ class ConsumerGroupList extends Component {
       });
   };
   render() {
-    const {
-      consumerGroup,
-      selectedCluster,
-      search,
-      pageNumber,
-      totalPageNumber,
-      roles
-    } = this.state;
+    const { consumerGroup, selectedCluster, search, pageNumber, totalPageNumber } = this.state;
+    const roles = this.state.roles || {};
     const { history } = this.props;
     const { clusterId } = this.props.match.params;
 

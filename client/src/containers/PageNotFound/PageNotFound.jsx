@@ -10,7 +10,7 @@ class PageNotFound extends Component {
   };
 
   componentDidMount() {
-    return (<Sidebar onLoaded={this.handleHide} />);
+    return <Sidebar onLoaded={this.handleHide} />;
   }
 
   render() {
@@ -18,11 +18,7 @@ class PageNotFound extends Component {
 
     let path = window.location.pathname.split('/');
 
-    let clusterId = '';
-    clusterId = path[1];
-    if (clusterId.length <= 0) {
-      clusterId = this.props.clusterId;
-    }
+    let clusterId = this.props.clusterId;
 
     return (
       <div className="no-side-bar" style={{ height: window.innerHeight - 100 }}>
@@ -38,7 +34,7 @@ class PageNotFound extends Component {
             <button
               class="btn btn-primary"
               style={{ marginLeft: 'auto' }}
-              onClick={() => history.replace(`/${clusterId}/topic`)}
+              onClick={() => history.replace('/')}
             >
               Back to home
             </button>

@@ -48,7 +48,7 @@ class Routes extends Component {
 
   render() {
     const { location } = this.props;
-    const roles = JSON.parse(localStorage.getItem('roles'));
+    const roles = JSON.parse(localStorage.getItem('roles')) || {};
     let path = window.location.pathname.split('/');
 
     let clusterId = '';
@@ -56,7 +56,6 @@ class Routes extends Component {
     if (clusterId.length <= 0) {
       clusterId = this.props.clusterId;
     }
-    
 
     if (path[1] === 'error') {
       return (
@@ -69,10 +68,11 @@ class Routes extends Component {
       return (
         <Base>
           <Switch location={location}>
-            <Route exact path="/:login" component= {Login}/>
+            <Route exact path="/page-not-found" component={PageNotFound} />
+            <Route exact path="/:login" component={Login} />
             {roles && roles.topic && roles.topic['topic/read'] && (
               /*<Route exact path="/page-not-found" component={PageNotFound} /> */
-              <Route exact path="/:clusterId/topic" component={TopicList} /> 
+              <Route exact path="/:clusterId/topic" component={TopicList} />
             )}
             {roles && roles.topic && roles.topic['topic/insert'] && (
               <Route exact path="/:clusterId/topic/create" component={TopicCreate} />
