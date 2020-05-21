@@ -3,6 +3,7 @@
     height: 100%;
     width: 40%;
     vertical-align: middle;
+    margin-left: 0px !important;
 }
 
 .pagination {
@@ -20,6 +21,7 @@
 .page-number {
     padding-bottom: 0.4rem;
     padding-top: 0.4rem;
+    margin-left: 0px !important;
 }
 
 .page-link {
@@ -28,8 +30,9 @@
 
 .page-input{
     font-size: 12px;
-    width: 40%;
-    max-width: 40%;
+    min-width: 10px;
+    width:15px;
+    max-width:15px;
     border-radius: 5%;
 }
 
