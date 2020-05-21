@@ -14,6 +14,7 @@
     display: inline-block;
     padding-bottom: 0.6rem;
     padding-top: 0.6rem;
+    margin-left: auto;
 }
 
 .page-number {
@@ -35,14 +36,6 @@
     -moz-box-sizing:content-box;
     -webkit-box-sizing:content-box;
     box-sizing:content-box;
-}
-
-@media (max-width: 450px) {
-    .page-input{
-        min-width: 60%;
-        width: 40%;
-        max-width: 70%;
-    }
 }
 
 .page-item.before, .page-item.after {
