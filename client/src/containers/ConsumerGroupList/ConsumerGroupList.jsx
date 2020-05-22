@@ -282,17 +282,19 @@ class ConsumerGroupList extends Component {
               : [constants.TABLE_DETAILS]
           }
         />
-        <nav
-          className="navbar navbar-expand-lg navbar-light bg-light mr-auto
+
+        <div
+          className="navbar navbar-expand-lg navbar-light mr-auto
          khq-data-filter khq-sticky khq-nav"
         >
+          <div className="collapse navbar-collapse" />
           <Pagination
             pageNumber={pageNumber}
             totalPageNumber={totalPageNumber}
             onChange={this.handlePageChange}
             onSubmit={this.handlePageChangeSubmission}
           />
-        </nav>
+        </div>
         <ConfirmModal
           show={this.state.showDeleteModal}
           handleCancel={this.closeDeleteModal}

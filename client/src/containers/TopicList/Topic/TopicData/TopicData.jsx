@@ -39,13 +39,18 @@ class TopicData extends Component {
     pageNumber: 1,
     nextPage: '',
     recordCount: 0,
-    showFilters: ''
+    showFilters: '',
+    datetime: ''
   };
 
   componentDidMount() {
     let { clusterId, topicId } = this.props.match.params;
+    const { history } = this.props;
 
     this.setState({ selectedCluster: clusterId, selectedTopic: topicId }, () => {
+      history.replace({
+        loading: true
+      });
       this.getMessages();
     });
   }
@@ -88,9 +93,6 @@ class TopicData extends Component {
     } = this.state;
     let data,
       partitionData = {};
-    history.replace({
-      loading: true
-    });
     try {
       data = await get(
         uriTopicData(
@@ -154,8 +156,8 @@ class TopicData extends Component {
     messages.map(message => {
       message.key = message.key ? message.key : 'null';
       message.value = message.value ? message.value : 'null';
-      const date = moment(message.timestamp);
-      message.timestamp = formatDateTime(
+      const date = moment(message.datetime);
+      message.datetime = formatDateTime(
         {
           year: date.year(),
           monthValue: date.month() + 1,
@@ -306,7 +308,8 @@ class TopicData extends Component {
       pageNumber,
       nextPage,
       recordCount,
-      showFilters
+      showFilters,
+      datetime
     } = this.state;
     const { loading } = this.props.history.location;
     const firstColumns = [
@@ -332,7 +335,9 @@ class TopicData extends Component {
             aria-controls="topic-data"
             aria-expanded="false"
             aria-label="Toggle navigation"
-            onClick={ ()=>{this.openAndCloseFilters()}}
+            onClick={() => {
+              this.openAndCloseFilters();
+            }}
           >
             <span className="navbar-toggler-icon" />
           </button>
@@ -385,29 +390,17 @@ class TopicData extends Component {
               <li className="nav-item dropdown">
                 <Dropdown>
                   <Dropdown.Toggle className="nav-link dropdown-toggle">
-                    <strong>Timestamp:</strong>{' '}
-                    {timestamp !== '' &&
-                      formatDateTime(
-                        {
-                          year: timestamp.year(),
-                          monthValue: timestamp.month() + 1,
-                          dayOfMonth: timestamp.date(),
-                          hour: timestamp.hour(),
-                          minute: timestamp.minute(),
-                          second: timestamp.second(),
-                          milli: timestamp.millisecond()
-                        },
-                        'MMM DD, YYYY, hh:mm A'
-                      )}
+                    <strong>Timestamp:</strong>
+                    {datetime !== '' && ' ' + datetime}
                   </Dropdown.Toggle>
                   {!loading && (
                     <Dropdown.Menu>
-                      <div className="input-group mb-2 datetime-picker-div">
+                      <div className="input-group">
                         <DatePicker
                           name={'datetime-picker'}
-                          value={timestamp}
+                          value={datetime}
                           onChange={value => {
-                            this.setState({ timestamp: moment(value) }, () => this.getMessages());
+                            this.setState({ datetime: value }, () => this.getMessages());
                           }}
                         />
                       </div>
