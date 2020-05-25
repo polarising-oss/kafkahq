@@ -10,7 +10,7 @@ import CodeViewModal from '../../../../components/Modal/CodeViewModal/CodeViewMo
 import Modal from '../../../../components/Modal/Modal';
 import Pagination from '../../../../components/Pagination/Pagination';
 import moment from 'moment';
-import DatePicker from '../../../../components/DatePicker/DatePicker';
+import DateTimePicker from '../../../../components/DateTimePicker/DateTimePicker';
 import Input from '../../../../components/Form/Input';
 import _ from 'lodash';
 import { checkPropTypes } from 'prop-types';
@@ -394,9 +394,9 @@ class TopicData extends Component {
                     {datetime !== '' && ' ' + datetime}
                   </Dropdown.Toggle>
                   {!loading && (
-                    <Dropdown.Menu>
+                    <Dropdown.Menu className="resize-datepicker">
                       <div className="input-group">
-                        <DatePicker
+                        <DateTimePicker
                           name={'datetime-picker'}
                           value={datetime}
                           onChange={value => {

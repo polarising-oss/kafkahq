@@ -6,7 +6,7 @@ import _ from 'lodash';
 import Input from './Input';
 import Select from './Select';
 import RadioGroup from './RadioGroup';
-import DatePicker from '../DatePicker';
+import DateTimePicker from '../DateTimePicker';
 import AceEditor from 'react-ace';
 
 import 'ace-builds/src-noconflict/mode-json';
@@ -163,7 +163,7 @@ class Form extends Component {
     const { formData, errors } = this.state;
 
     return (
-      <DatePicker
+      <DateTimePicker
         name={name}
         label={label}
         error={errors[name]}

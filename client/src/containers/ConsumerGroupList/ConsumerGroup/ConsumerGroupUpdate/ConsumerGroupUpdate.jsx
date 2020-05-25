@@ -2,7 +2,7 @@ import React from 'react';
 import Header from '../../../Header/Header';
 import Form from '../../../../components/Form/Form';
 import Dropdown from 'react-bootstrap/Dropdown';
-import DatePicker from '../../../../components/DatePicker/DatePicker';
+import DateTimePicker from '../../../../components/DateTimePicker/DateTimePicker';
 import { formatDateTime } from '../../../../utils/converters';
 import Joi from 'joi-browser';
 import { get, post } from '../../../../utils/api';
@@ -263,7 +263,7 @@ class ConsumerGroupUpdate extends Form {
             {!loading && (
               <Dropdown.Menu>
                 <div className="filter-datetime">
-                  <DatePicker
+                  <DateTimePicker
                     name={'datetime-picker'}
                     value={timestamp}
                     label={''}
