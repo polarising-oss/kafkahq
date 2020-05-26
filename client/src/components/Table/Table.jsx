@@ -84,10 +84,11 @@ class Table extends Component {
   }
 
   renderRow(row, index) {
-    const { actions, columns, extraRow, onExpand, noRowBackgroundChange } = this.props;
+    const { actions, columns, extraRow, onExpand, noRowBackgroundChange, onDetails } = this.props;
     const { extraExpanded } = this.state;
 
-    let extraRowCol;
+    let extraRowColCollapsed;
+    let extraRowColExpanded;
     const items = [
       <tr key={`tableRow${index}`}>
         {columns.map((column, colIndex) => {
@@ -99,9 +100,19 @@ class Table extends Component {
             extraStyles.push({ cursor: 'pointer' });
           }
           if (column.extraRow) {
-            extraRowCol = column.cell ? column.cell(row, column) : row[column.accessor];
+            extraRowColCollapsed = column.cell ? column.cell(row, column) : row[column.accessor];
+            extraRowColExpanded = column.extraRowContent
+              ? column.extraRowContent(row, column)
+              : row[column.accessor];
             return (
-              <td id={`row_${column.id}_${colIndex}`}>
+              <td
+                onClick={() => {
+                  if (actions && actions.find(action => action === constants.TABLE_DETAILS)) {
+                    onDetails && onDetails(row.id, row);
+                  }
+                }}
+                id={`row_${column.id}_${colIndex}`}
+              >
                 <div className={`align-cell`}></div>
               </td>
             );
@@ -111,6 +122,14 @@ class Table extends Component {
               <td
                 style={column.expand ? { cursor: 'pointer' } : {}}
                 onClick={() => {
+                  if (
+                    actions &&
+                    actions.find(action => action === constants.TABLE_DETAILS) &&
+                    !column.expand
+                  ) {
+                    onDetails && onDetails(row.id, row);
+                  }
+
                   column.expand && this.handleExpand(row);
                 }}
                 id={`row_${column.id}_${colIndex}`}
@@ -123,6 +142,14 @@ class Table extends Component {
             <td
               style={column.expand ? { cursor: 'pointer' } : {}}
               onClick={() => {
+                if (
+                  actions &&
+                  actions.find(action => action === constants.TABLE_DETAILS) &&
+                  !column.expand
+                ) {
+                  onDetails && onDetails(row.id, row);
+                }
+
                 column.expand && this.handleExpand(row);
               }}
               id={`row_${column.id}_${colIndex}`}
@@ -194,7 +221,11 @@ class Table extends Component {
                   : 'collapsed-extra-row'
               }
             >
-              {extraRowCol}
+              {extraExpanded &&
+              JSON.stringify(extraExpanded.find(expanded => expanded === row.id)) &&
+              JSON.stringify(extraExpanded.find(expanded => expanded === row.id)).length > 0
+                ? extraRowColExpanded
+                : extraRowColCollapsed}
             </div>
           </td>
         </tr>
@@ -302,7 +333,7 @@ class Table extends Component {
   }
 
   render() {
-    const { columns } = this.props;
+    const { columns, noStripes } = this.props;
     let allItemRows = [];
     let data = this.props.data || [];
 
@@ -313,9 +344,13 @@ class Table extends Component {
       const perItemRows = this.renderRow(item, index);
       allItemRows = allItemRows.concat(perItemRows);
     });
+
+    let classNames = 'table table-bordered table-hover mb-0';
+    if (!noStripes) classNames += ' table-striped';
+    if (noStripes) classNames += ' no-stripes';
     return (
       <div className="table-responsive">
-        <table className="table table-bordered table-striped table-hover mb-0">
+        <table className={classNames}>
           {this.renderHeader()}
           <tbody>{data && data.length > 0 ? allItemRows : this.renderNoContent()}</tbody>
         </table>

@@ -1,7 +1,10 @@
 import { node } from 'prop-types';
 
-export const baseUrl = 'http://localhost:8080';
-//`${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
+// Please, comment the localhost one before PR to dev
+
+export const baseUrl = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
+//export const baseUrl = 'http://localhost:8080';
+
 export const apiUrl = `${baseUrl}/api`;
 
 export const uriLogin = () => {
@@ -244,9 +247,7 @@ export const uriLiveTail = (clusterId, search, topics, size) => {
   let searchUrl = `search=${search}`;
   let topicsUrl = search.length > 0 ? '&' : '';
   topics.map((topic, index) => {
-    console.log('oncount', topics.length, index);
     if (index > 0) {
-      console.log('here', index);
       topicsUrl += '&topics=' + topic;
     } else {
       topicsUrl += 'topics=' + topic;
