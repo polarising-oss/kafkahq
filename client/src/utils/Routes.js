@@ -64,6 +64,13 @@ class Routes extends Component {
         </Switch>
       );
     }
+    if (path[1] === 'page-not-found') {
+      return (
+          <Switch>
+            <Route exact path="/page-not-found" component={PageNotFound} />
+          </Switch>
+      );
+    }
     if (clusterId.length > 0) {
       return (
         <Base>
