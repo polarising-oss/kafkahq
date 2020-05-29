@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Input from '../Form/Input';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
+import { Clock, Calendar } from 'material-ui-next-pickers';
 import { DateTimePicker } from '@material-ui/pickers';
 import moment from 'moment';
 import { formatDateTime } from '../../utils/converters';
@@ -130,7 +131,7 @@ class DatePicker extends React.Component {
   };
 
   state = {
-    value: moment(),
+    value: new Date(),
     openDateModal: false
   };
 
@@ -143,6 +144,8 @@ class DatePicker extends React.Component {
       this.props.onChange && this.props.onChange(value);
     });
   };
+
+  onTimeChange = () => {};
 
   getDisplayValue = value => {
     try {
@@ -166,29 +169,34 @@ class DatePicker extends React.Component {
     const { value, openDateModal } = this.state;
     const { name, label, error } = this.props;
     return (
-      <MuiThemeProvider theme={customTheme}>
-        <DateTimePicker
-          value={this.state.value}
-          onChange={date => {
-            this.onChange(date);
-          }}
-          open={openDateModal}
-          onClose={() => {
-            this.setState({ openDateModal: false });
-          }}
-          TextFieldComponent={() => (
-            <Input
-              name={name}
-              label={label}
-              error={error}
-              value={this.getDisplayValue(value)}
-              onClick={() => {
-                this.setState({ openDateModal: true });
-              }}
-            />
-          )}
-        />
-      </MuiThemeProvider>
+      <div>
+        <Clock value={new Date()} />
+        <Calendar value={new Date()} />
+      </div>
+      // <MuiThemeProvider theme={customTheme}>
+
+      //   <DateTimePicker
+      //     value={this.state.value}
+      //     onChange={date => {
+      //       this.onChange(date);
+      //     }}
+      //     open={openDateModal}
+      //     onClose={() => {
+      //       this.setState({ openDateModal: false });
+      //     }}
+      //     TextFieldComponent={() => (
+      //       <Input
+      //         name={name}
+      //         label={label}
+      //         error={error}
+      //         value={this.getDisplayValue(value)}
+      //         onClick={() => {
+      //           this.setState({ openDateModal: true });
+      //         }}
+      //       />
+      //     )}
+      //   />
+      // </MuiThemeProvider>
     );
   };
 }
