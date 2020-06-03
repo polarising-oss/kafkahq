@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Input from '../Form/Input';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
-import { Clock, Calendar } from 'material-ui-next-pickers';
+import { Clock, Calendar, TimeFormatInput, DateFormatInput } from 'material-ui-next-pickers';
 import { DateTimePicker } from '@material-ui/pickers';
 import moment from 'moment';
 import { formatDateTime } from '../../utils/converters';
@@ -184,7 +184,12 @@ class DatePicker extends React.Component {
         <div
           style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 20 }}
         >
-          <Calendar value={new Date()} />
+          <Calendar
+            onChange={value => {
+              console.log('calendar', value);
+            }}
+            value={new Date()}
+          />
         </div>
       </div>
       // <MuiThemeProvider theme={customTheme}>
