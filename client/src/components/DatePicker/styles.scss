@@ -18,9 +18,9 @@
   color: black !important;
 }
 
-.Clock-clockAnalogContainer-10 {
-  display: none !important;
-}
+// .Clock-clockAnalogContainer-10 {
+//   display: none !important;
+// }
 
 .MuiIconButton-label {
   color: white !important;
@@ -32,4 +32,70 @@
 
 .Calendar-selectedDayText-98 {
   color: #ffc107 !important;
+}
+
+.clock-root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.clock-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: row,;
+  align-items:center;
+}
+
+.clock-hand {
+  display: flex;
+  justify-content: center;
+  flex-direction: row,;
+  align-items:center;
+}
+
+.Clock-clockHandContainer-17 {
+  padding-bottom: 0px;
+  position: relative;
+}
+
+.Clock-clockHandContainer-17 {
+  left: calc(50% - 1px);
+    width: 2px;
+    bottom: 50%;
+    position: absolute;
+    background-color: #ffc107 ;
+    transform-origin: center bottom 0px;
+}
+
+.Clock-clockHandHead-19 {
+  top: -16px !important;
+  left: -15px !important;
+  width: 4px !important;
+  border: 14px solid #ffc107  !important;
+  height: 4px !important;
+  position: absolute !important;
+  box-sizing: content-box !important;
+  border-color: #ffc107  !important;
+  border-radius: 100% !important;
+  background-color: #ffc107  !important;
+
+}
+
+.Clock-clockHandTail-20 {
+  display: none !important;
+}
+
+.Calendar-calendarControlButton-86 {
+  margin-left: -40px !important;
+}
+
+.Calendar-calendarControlMonth-87 {
+  margin-right: 0px !important;
+}
+
+.Calendar-calendarContainer-84 {
+  max-width: 300px !important;
+  justify-content: center;
 }

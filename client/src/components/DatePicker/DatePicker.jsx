@@ -169,33 +169,26 @@ class DatePicker extends React.Component {
     const { value, openDateModal } = this.state;
     const { name, label, error } = this.props;
     return (
-      <div>
-        <Clock value={new Date()} />
-        <Calendar value={new Date()} />
+      <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <Clock
+          classes={{
+            root: 'clock-root',
+            digitalContainer: 'clock-container',
+            hand: 'clock-hand'
+          }}
+          onChange={value => {
+            console.log('clock', value);
+          }}
+          value={new Date()}
+        />
+        <div
+          style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 20 }}
+        >
+          <Calendar value={new Date()} />
+        </div>
       </div>
       // <MuiThemeProvider theme={customTheme}>
 
-      //   <DateTimePicker
-      //     value={this.state.value}
-      //     onChange={date => {
-      //       this.onChange(date);
-      //     }}
-      //     open={openDateModal}
-      //     onClose={() => {
-      //       this.setState({ openDateModal: false });
-      //     }}
-      //     TextFieldComponent={() => (
-      //       <Input
-      //         name={name}
-      //         label={label}
-      //         error={error}
-      //         value={this.getDisplayValue(value)}
-      //         onClick={() => {
-      //           this.setState({ openDateModal: true });
-      //         }}
-      //       />
-      //     )}
-      //   />
       // </MuiThemeProvider>
     );
   };

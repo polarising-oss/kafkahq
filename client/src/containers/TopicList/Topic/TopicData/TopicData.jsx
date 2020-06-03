@@ -396,15 +396,13 @@ class TopicData extends Component {
                   </Dropdown.Toggle>
                   {!loading && (
                     <Dropdown.Menu className="resize-datepicker">
-                      <div className="input-group">
-                        <DatePicker
-                          name={'datetime-picker'}
-                          value={datetime}
-                          onChange={value => {
-                            this.setState({ datetime: value }, () => this.getMessages());
-                          }}
-                        />
-                      </div>
+                      <DatePicker
+                        name={'datetime-picker'}
+                        value={datetime}
+                        onChange={value => {
+                          this.setState({ datetime: value }, () => this.getMessages());
+                        }}
+                      />
                     </Dropdown.Menu>
                   )}
                 </Dropdown>
