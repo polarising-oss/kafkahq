@@ -18,7 +18,8 @@ class TopicConfigs extends Form {
     changedConfigs: {},
     errors: {},
     configs: [],
-    roles: JSON.parse(localStorage.getItem('roles'))
+    roles: JSON.parse(localStorage.getItem('roles')),
+    updateConfigDisabled: true
   };
 
   schema = {};
@@ -105,7 +106,7 @@ class TopicConfigs extends Form {
   }
 
   onChange({ currentTarget: input }) {
-    let { data, configs } = this.state;
+    let { data, configs, updateConfigDisabled } = this.state;
     let config = {};
     let newData = data.map(row => {
       if (row.id === input.name) {
@@ -115,10 +116,11 @@ class TopicConfigs extends Form {
         if (input.value === config.value) {
           delete changedConfigs[input.name];
         } else {
+          updateConfigDisabled = false;
           changedConfigs[input.name] = input.value;
         }
 
-        this.setState({ formData, changedConfigs });
+        this.setState({ formData, changedConfigs, updateConfigDisabled });
         return {
           id: config.name,
           name: config.name,
@@ -149,7 +151,7 @@ class TopicConfigs extends Form {
         configs: changedConfigs
       });
 
-      this.setState({ state: this.state }, () =>
+      this.setState({ state: this.state, updateConfigDisabled: true }, () =>
         this.props.history.replace({
           showSuccessToast: true,
           successToastMessage: `Topic configs '${selectedTopic}' is updated`,
@@ -237,7 +239,7 @@ class TopicConfigs extends Form {
   }
 
   render() {
-    const { data } = this.state;
+    const { data, updateConfigDisabled } = this.state;
     const roles = this.state.roles || {};
     return (
       <form
@@ -285,7 +287,7 @@ class TopicConfigs extends Form {
           />
           {roles.topic && roles.topic['topic/config/update'] && !this.props.internal ? (
             <aside>
-              {this.renderButton('Update configs', this.handleSubmit, undefined, 'submit')}
+              {this.renderButton('Update configs', this.handleSubmit, undefined, 'submit', undefined, updateConfigDisabled)}
             </aside>
           ) : null}
         </div>

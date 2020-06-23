@@ -18,7 +18,8 @@ class NodeConfigs extends Form {
     changedConfigs: {},
     errors: {},
     configs: [],
-    roles: JSON.parse(localStorage.getItem('roles'))
+    roles: JSON.parse(localStorage.getItem('roles')),
+    updateConfigDisabled: true
   };
 
   schema = {};
@@ -75,11 +76,11 @@ class NodeConfigs extends Form {
     switch (dataType) {
       case MILLI:
         return (
-          <small className="humanize form-text text-muted">{converters.showTime(value)}</small>
+            <small className="humanize form-text text-muted">{converters.showTime(value)}</small>
         );
       case BYTES:
         return (
-          <small className="humanize form-text text-muted">{converters.showBytes(value)}</small>
+            <small className="humanize form-text text-muted">{converters.showBytes(value)}</small>
         );
       default:
         return <small></small>;
@@ -112,7 +113,7 @@ class NodeConfigs extends Form {
   }
 
   onChange({ currentTarget: input }) {
-    let { data, configs } = this.state;
+    let { data, configs, updateConfigDisabled } = this.state;
     let config = {};
     let newData = data.map(row => {
       if (row.id === input.name) {
@@ -122,10 +123,11 @@ class NodeConfigs extends Form {
         if (input.value === config.value) {
           delete changedConfigs[input.name];
         } else {
+          updateConfigDisabled = false;
           changedConfigs[input.name] = input.value;
         }
 
-        this.setState({ formData, changedConfigs });
+        this.setState({ formData, changedConfigs, updateConfigDisabled });
         return {
           id: config.name,
           name: config.name,
@@ -156,11 +158,11 @@ class NodeConfigs extends Form {
       });
 
       this.setState({ state: this.state }, () =>
-        this.props.history.replace({
-          showSuccessToast: true,
-          successToastMessage: `Node configs '${selectedNode}' is updated`,
-          loading: false
-        })
+          this.props.history.replace({
+            showSuccessToast: true,
+            successToastMessage: `Node configs '${selectedNode}' is updated`,
+            loading: false
+          })
       );
 
       Object.keys(changedConfigs).forEach(key => {
@@ -169,7 +171,7 @@ class NodeConfigs extends Form {
         configs[configIndex].value = changedConfig;
       });
 
-      this.setState({ configs });
+      this.setState({ configs, updateConfigDisabled: true });
     } catch (err) {
       this.props.history.replace({
         showErrorToast: true,
@@ -183,126 +185,126 @@ class NodeConfigs extends Form {
 
   getInput(value, name, readOnly, dataType) {
     return (
-      <div>
-        {dataType === 'TEXT' ? (
-          <input
-            type="text"
-            onChange={value => this.onChange(value)}
-            className="form-control"
-            autoComplete="off"
-            value={value}
-            readOnly={readOnly}
-            name={name}
-            placeholder="Default"
-          />
-        ) : (
-          <input
-            type="number"
-            onChange={value => this.onChange(value)}
-            className="form-control"
-            autoComplete="off"
-            value={value}
-            readOnly={readOnly}
-            name={name}
-            placeholder="Default"
-          />
-        )}
-        {this.handleDataType(dataType, value)}
-      </div>
+        <div>
+          {dataType === 'TEXT' ? (
+              <input
+                  type="text"
+                  onChange={value => this.onChange(value)}
+                  className="form-control"
+                  autoComplete="off"
+                  value={value}
+                  readOnly={readOnly}
+                  name={name}
+                  placeholder="Default"
+              />
+          ) : (
+              <input
+                  type="number"
+                  onChange={value => this.onChange(value)}
+                  className="form-control"
+                  autoComplete="off"
+                  value={value}
+                  readOnly={readOnly}
+                  name={name}
+                  placeholder="Default"
+              />
+          )}
+          {this.handleDataType(dataType, value)}
+        </div>
     );
   }
 
   handleTypeAndSensitive(configType, configSensitive) {
     const type = configType === 'DEFAULT_CONFIG' ? 'secondary' : 'warning';
     return (
-      <div>
-        <span className={'badge badge-' + type}> {configType}</span>
-        {configSensitive ? (
-          <i className="sensitive fa fa-exclamation-triangle text-danger" aria-hidden="true"></i>
-        ) : (
-          ''
-        )}
-      </div>
+        <div>
+          <span className={'badge badge-' + type}> {configType}</span>
+          {configSensitive ? (
+              <i className="sensitive fa fa-exclamation-triangle text-danger" aria-hidden="true"></i>
+          ) : (
+              ''
+          )}
+        </div>
     );
   }
 
   handleNameAndDescription(name, description) {
     const descript = description ? (
-      <span className="text-secondary" data-toggle="tooltip" title={description}>
+        <span className="text-secondary" data-toggle="tooltip" title={description}>
         <i className="fa fa-question-circle" aria-hidden="true"></i>
       </span>
     ) : (
-      ''
+        ''
     );
     return (
-      <div>
-        <code>{name}</code> {descript}
-      </div>
+        <div>
+          <code>{name}</code> {descript}
+        </div>
     );
   }
 
   renderTabs(tabName, isActive) {
     const active = isActive ? 'active' : '';
     return (
-      <li className="nav-item">
-        <div className={`nav-link ${active}`} role="tab">
-          {tabName}
-        </div>
-      </li>
+        <li className="nav-item">
+          <div className={`nav-link ${active}`} role="tab">
+            {tabName}
+          </div>
+        </li>
     );
   }
 
   render() {
-    const { data } = this.state;
+    const { data, updateConfigDisabled } = this.state;
     const roles = this.state.roles || {};
     return (
-      <form
-        encType="multipart/form-data"
-        className="khq-form mb-0"
-        onSubmit={() => this.handleSubmit()}
-      >
-        <div>
-          <Table
-            columns={[
-              {
-                id: 'nameAndDescription',
-                accessor: 'nameAndDescription',
-                colName: 'Name',
-                type: 'text',
-                cell: obj => {
-                  return this.handleNameAndDescription(obj.name, obj.description);
-                }
-              },
-              {
-                id: 'value',
-                accessor: 'value',
-                colName: 'Value',
-                type: 'text',
-                cell: obj => {
-                  return this.getInput(
-                    this.state.formData[obj.name],
-                    obj.name,
-                    obj.readOnly,
-                    obj.dataType
-                  );
-                }
-              },
-              {
-                id: 'typeAndSensitive',
-                accessor: 'typeAndSensitive',
-                colName: 'Type',
-                type: 'text',
-                cell: obj => {
-                  return this.handleTypeAndSensitive(obj.type, obj.sensitive);
-                }
-              }
-            ]}
-            data={data}
-          />
-          {roles.node['node/config/update'] &&
-            this.renderButton('Update configs', this.handleSubmit, undefined, 'submit')}
-        </div>
-      </form>
+        <form
+            encType="multipart/form-data"
+            className="khq-form mb-0"
+            onSubmit={() => this.handleSubmit()}
+        >
+          <div>
+            <Table
+                columns={[
+                  {
+                    id: 'nameAndDescription',
+                    accessor: 'nameAndDescription',
+                    colName: 'Name',
+                    type: 'text',
+                    cell: obj => {
+                      return this.handleNameAndDescription(obj.name, obj.description);
+                    }
+                  },
+                  {
+                    id: 'value',
+                    accessor: 'value',
+                    colName: 'Value',
+                    type: 'text',
+                    cell: obj => {
+                      return this.getInput(
+                          this.state.formData[obj.name],
+                          obj.name,
+                          obj.readOnly,
+                          obj.dataType
+                      );
+                    }
+                  },
+                  {
+                    id: 'typeAndSensitive',
+                    accessor: 'typeAndSensitive',
+                    colName: 'Type',
+                    type: 'text',
+                    cell: obj => {
+                      return this.handleTypeAndSensitive(obj.type, obj.sensitive);
+                    }
+                  }
+                ]}
+                data={data}
+            />
+            {roles.node['node/config/update'] &&
+            this.renderButton('Update configs', this.handleSubmit, undefined, 'submit', undefined, updateConfigDisabled)}
+          </div>
+        </form>
     );
   }
 }
