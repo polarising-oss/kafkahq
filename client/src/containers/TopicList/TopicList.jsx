@@ -175,16 +175,15 @@ class TopicList extends Component {
             <div>
               <a
                 href={`/ui/${this.state.selectedCluster}/group/${consumerGroup.id}`}
-                className={{activeTopic}}
+                className={{ activeTopic }}
                 onClick={noPropagation}
               >
-                {consumerGroup.id}
-                {' '}
-                <div className="badge badge-light"> Lag: {offsetLag}</div>
+                {consumerGroup.id} <div className="badge badge-light"> Lag: {offsetLag}</div>
               </a>
             </div>
           );
         }
+        return null;
       });
     }
 
@@ -207,7 +206,7 @@ class TopicList extends Component {
       <div>
         <Header title="Topics" history={this.props.history} />
         <nav
-          className="navbar navbar-expand-lg navbar-light 
+          className="navbar navbar-expand-lg navbar-light
         bg-light mr-auto khq-data-filter khq-sticky khq-nav"
         >
           <SearchBar
@@ -285,7 +284,7 @@ class TopicList extends Component {
               colName: 'Consumer Groups',
               type: 'text',
               cell: obj => {
-                if(obj.groupComponent){
+                if (obj.groupComponent) {
                   return this.handleConsumerGroups(obj.groupComponent, obj.id);
                 }
               }
@@ -309,7 +308,7 @@ class TopicList extends Component {
         />
 
         <div
-          className="navbar navbar-expand-lg navbar-light mr-auto 
+          className="navbar navbar-expand-lg navbar-light mr-auto
         khq-data-filter khq-sticky khq-nav"
         >
           <div className="collapse navbar-collapse" />
