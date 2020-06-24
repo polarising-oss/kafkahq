@@ -185,6 +185,7 @@ class Sidebar extends Component {
       showConnects,
       selectedTab
     } = this.state;
+    const height = document.getElementById('root').offsetHeight;
     const roles = this.state.roles || {};
     const tag = 'Snapshot';
     const { listConnects, listClusters } = this.setClustersAndConnects();
@@ -194,7 +195,7 @@ class Sidebar extends Component {
         onToggle={expanded => {
           this.props.toggleSidebar(expanded);
         }}
-        style={{ background: 'black', height: 'auto' }}
+        style={{ background: 'black', height: height }}
       >
         <SideNav.Toggle /> <img src={logo} alt="" />
         <SideNav.Nav
