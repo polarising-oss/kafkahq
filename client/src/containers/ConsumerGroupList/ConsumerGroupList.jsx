@@ -222,8 +222,7 @@ class ConsumerGroupList extends Component {
             {
               id: 'id',
               accessor: 'id',
-              colName: 'Id',
-              sortable: true
+              colName: 'Id'
             },
             {
               id: 'state',
@@ -244,8 +243,7 @@ class ConsumerGroupList extends Component {
             {
               id: 'members',
               accessor: 'members',
-              colName: 'Members',
-              sortable: true
+              colName: 'Members'
             },
             {
               id: 'topics',
@@ -275,17 +273,7 @@ class ConsumerGroupList extends Component {
               : [constants.TABLE_DETAILS]
           }
         />
-        <nav
-          className="navbar navbar-expand-lg navbar-light bg-light mr-auto
-         khq-data-filter khq-sticky khq-nav"
-        >
-          <Pagination
-            pageNumber={pageNumber}
-            totalPageNumber={totalPageNumber}
-            onChange={this.handlePageChange}
-            onSubmit={this.handlePageChangeSubmission}
-          />
-        </nav>
+
         <ConfirmModal
           show={this.state.showDeleteModal}
           handleCancel={this.closeDeleteModal}

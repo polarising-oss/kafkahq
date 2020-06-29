@@ -9,7 +9,7 @@ import Table from '../../components/Table';
 import AceEditor from 'react-ace';
 
 import 'ace-builds/src-noconflict/mode-json';
-import 'ace-builds/src-noconflict/theme-dracula';
+import 'ace-builds/src-noconflict/theme-merbivore_soft';
 
 const STATUS = {
   STOPPED: 'STOPPED',
@@ -361,15 +361,13 @@ class Tail extends Component {
                 id: 'topic',
                 accessor: 'topic',
                 colName: 'Topic',
-                type: 'text',
-                sortable: true
+                type: 'text'
               },
               {
                 id: 'key',
                 accessor: 'key',
                 colName: 'Key',
                 type: 'text',
-                sortable: true,
                 cell: obj => {
                   return <span style={{ color: 'red' }}>{obj.key}</span>;
                 }
@@ -378,22 +376,19 @@ class Tail extends Component {
                 id: 'timestamp',
                 accessor: 'timestamp',
                 colName: 'Date',
-                type: 'text',
-                sortable: true
+                type: 'text'
               },
               {
                 id: 'partition',
                 accessor: 'partition',
                 colName: 'Partition',
-                type: 'text',
-                sortable: true
+                type: 'text'
               },
               {
                 id: 'offset',
                 accessor: 'offset',
                 colName: 'Offset',
-                type: 'text',
-                sortable: true
+                type: 'text'
               },
               {
                 id: 'headers',
@@ -420,7 +415,7 @@ class Tail extends Component {
                     <AceEditor
                       mode="json"
                       id={'value' + index}
-                      theme="dracula"
+                      theme="merbivore_soft"
                       value={obj.value}
                       readOnly
                       name="UNIQUE_ID_OF_DIV"

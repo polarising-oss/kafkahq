@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from '../../images/logo.svg';
 import { Link, withRouter } from 'react-router-dom';
 import { matchPath } from 'react-router';
 import { get } from '../../utils/api';
@@ -19,7 +18,8 @@ class Sidebar extends Component {
     allConnects: [],
     showClusters: false,
     showConnects: false,
-    roles: JSON.parse(localStorage.getItem('roles'))
+    roles: JSON.parse(localStorage.getItem('roles')),
+    height: 'auto'
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -62,11 +62,11 @@ class Sidebar extends Component {
         _(allClusters.data)
           .sortBy(cluster => cluster.id)
           .value() || [];
-      const cluster = allClusters.find(cluster => cluster.id === clusterId).id;
+      const cluster = allClusters.find(cluster => cluster.id === clusterId);
       this.setState(
         {
           allClusters: allClusters,
-          selectedCluster: cluster || allClusters[0].id
+          selectedCluster: ((cluster)? cluster.id : allClusters[0].id) || allClusters[0].id
         },
         () => {
           const { selectedCluster } = this.state;
@@ -81,6 +81,12 @@ class Sidebar extends Component {
       } else {
         this.props.history.replace('/ui/error', { errorData: err });
       }
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.location !== prevProps.location) {
+      this.setState({ height: document.getElementById('root').offsetHeight });
     }
   }
 
@@ -185,7 +191,8 @@ class Sidebar extends Component {
       selectedCluster,
       showClusters,
       showConnects,
-      selectedTab
+      selectedTab,
+      height
     } = this.state;
     const roles = this.state.roles || {};
     const tag = 'Snapshot';
@@ -196,9 +203,9 @@ class Sidebar extends Component {
         onToggle={expanded => {
           this.props.toggleSidebar(expanded);
         }}
-        style={{ background: 'black', height: 'auto' }}
+        style={{ background: 'black', height: height }}
       >
-        <SideNav.Toggle /> <img src={logo} alt="" />
+        <SideNav.Toggle /> <span className="logo" />
         <SideNav.Nav
           defaultSelected={`${constants.TOPIC}`}
           style={{ background: 'black' }}
@@ -262,7 +269,6 @@ class Sidebar extends Component {
             <NavItem
               eventKey="connects"
               className={selectedTab === constants.CONNECT ? 'active' : ''}
-              style={{marginBottom: '3rem'}}
             >
               <NavIcon>
                 <i className="fa fa-fw fa fa-exchange" aria-hidden="true" />

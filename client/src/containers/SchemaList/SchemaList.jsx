@@ -211,14 +211,12 @@ class SchemaList extends Component {
             {
               id: 'id',
               accessor: 'id',
-              colName: 'Id',
-              sortable: true
+              colName: 'Id'
             },
             {
               id: 'subject',
               accessor: 'subject',
-              colName: 'Subject',
-              sortable: true
+              colName: 'Subject'
             },
             {
               id: 'version',
@@ -240,7 +238,7 @@ class SchemaList extends Component {
                   <AceEditor
                     mode="json"
                     id={'value' + index}
-                    theme="dracula"
+                    theme="merbivore_soft"
                     value={obj[col.accessor]}
                     readOnly
                     name="UNIQUE_ID_OF_DIV"
@@ -325,18 +323,6 @@ class SchemaList extends Component {
           noContent={'No schemas available'}
         />
 
-        <div
-          className="navbar navbar-expand-lg navbar-light mr-auto
-         khq-data-filter khq-sticky khq-nav"
-        >
-          <div className="collapse navbar-collapse" />
-          <Pagination
-            pageNumber={pageNumber}
-            totalPageNumber={totalPageNumber}
-            onChange={this.handlePageChange}
-            onSubmit={this.handlePageChangeSubmission}
-          />
-        </div>
         {roles.registry && roles.registry['registry/insert'] && (
           <aside>
             <Link

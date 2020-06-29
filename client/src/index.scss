@@ -37,35 +37,19 @@ $fa-font-path: "../fonts";
 @import "containers/Login/styles.scss";
 @import "containers/PageNotFound/styles.scss";
 
+#content {
+  transition: all 0.2s ease;
 
-// app
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo
-  {
-    animation: App-logo-spin infinite 20s linear;
+  aside {
+    width: 100%;
+    left: 0;
   }
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.khq-data-filter {
+  @include media-breakpoint-up(sm) {
+    select {
+      max-width: 100%;
+    }
   }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-
-#content aside {
-  width: 100%;
-  left: 0;
 }
