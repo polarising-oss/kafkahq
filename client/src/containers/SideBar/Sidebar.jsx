@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { matchPath } from 'react-router';
-import { get } from '../../utils/api';
-import { uriClusters } from '../../utils/endpoints';
 import constants from '../../utils/constants';
 import _ from 'lodash';
 import './styles.scss';
-import SideNav, { NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
+import SideNav, { NavIcon, NavItem, NavText } from '@trendmicro/react-sidenav';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
+import history from '../../utils/history';
 
 class Sidebar extends Component {
   state = {
@@ -20,7 +19,7 @@ class Sidebar extends Component {
     showConnects: false,
     enableRegistry: false,
     enableConnect: false,
-    roles: JSON.parse(localStorage.getItem('roles')),
+    roles: JSON.parse(sessionStorage.getItem('roles')),
     height: 'auto'
   };
 
@@ -44,12 +43,14 @@ class Sidebar extends Component {
     if (tabs.find(el => el === path[2])) {
       this.setState({ selectedTab: path[2] });
     }
-    this.handleGetClusters(selectedCluster => {
-      this.handleRegistryAndConnects(selectedCluster);
-    });
+    if (this.props.clusters && this.props.clusters.length > 0) {
+      this.handleGetClusters(this.props.clusters || [], selectedCluster => {
+        this.handleRegistryAndConnects(selectedCluster);
+      });
+    }
   }
 
-  async handleGetClusters(callback = () => {}) {
+  handleGetClusters(clusters, callback = () => {}) {
     const match = matchPath(this.props.history.location.pathname, {
       path: '/ui/:clusterId/',
       exact: false,
@@ -57,11 +58,9 @@ class Sidebar extends Component {
     });
 
     const clusterId = match ? match.params.clusterId || '' : '';
-    let allClusters = {};
     try {
-      allClusters = await get(uriClusters());
-      allClusters =
-        _(allClusters.data)
+      let allClusters =
+        _(clusters)
           .sortBy(cluster => cluster.id)
           .value() || [];
       const cluster = allClusters.find(cluster => cluster.id === clusterId);
@@ -72,17 +71,13 @@ class Sidebar extends Component {
         },
         () => {
           const { selectedCluster } = this.state;
-
           callback(selectedCluster);
         }
       );
-    } catch (err) {
-      console.log(err);
-      if (err.status === 404) {
-        this.props.history.replace('/ui/page-not-found', { errorData: err });
-      } else {
-        this.props.history.replace('/ui/error', { errorData: err });
-      }
+    } finally {
+      history.replace({
+        loading: false
+      });
     }
   }
 
@@ -90,18 +85,31 @@ class Sidebar extends Component {
     if (this.props.location !== prevProps.location) {
       this.setState({ height: document.getElementById('root').offsetHeight });
     }
+    if (this.props.clusters !== prevProps.clusters) {
+      this.handleGetClusters(this.props.clusters || [], selectedCluster => {
+        this.handleRegistryAndConnects(selectedCluster);
+      });
+    }
   }
 
   handleRegistryAndConnects(selectedCluster) {
     const { allClusters } = this.state;
     const cluster = allClusters.find(cluster => cluster.id === selectedCluster);
     const enableConnects = cluster.connects !== undefined;
-    if(enableConnects) {
-      this.setState({enableRegistry: cluster.registry, enableConnect: enableConnects,
-        allConnects: cluster.connects, selectedConnect: cluster.connects[0]});
+    if (enableConnects) {
+      this.setState({
+        enableRegistry: cluster.registry,
+        enableConnect: enableConnects,
+        allConnects: cluster.connects,
+        selectedConnect: cluster.connects[0]
+      });
     } else {
-      this.setState({ enableRegistry: cluster.registry, enableConnect: enableConnects,
-        allConnects: [], selectedConnect: '' });
+      this.setState({
+        enableRegistry: cluster.registry,
+        enableConnect: enableConnects,
+        allConnects: [],
+        selectedConnect: ''
+      });
     }
   }
 
@@ -276,8 +284,7 @@ class Sidebar extends Component {
             roles.registry &&
             roles.registry['registry/read'] &&
             this.renderMenuItem('fa fa-fw fa-cogs', constants.SCHEMA, 'Schema Registry')}
-          {enableConnect &&
-             roles && roles.connect && roles.connect['connect/read'] && (
+          {enableConnect && roles && roles.connect && roles.connect['connect/read'] && (
             <NavItem
               eventKey="connects"
               className={selectedTab === constants.CONNECT ? 'active' : ''}

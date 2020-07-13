@@ -7,7 +7,8 @@ import history from '../../utils/history';
 import { get, login } from '../../utils/api';
 import Form from '../../components/Form/Form';
 import Joi from 'joi-browser';
-
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // Adaptation of login.ftl
 
 class Login extends Form {
@@ -49,9 +50,6 @@ class Login extends Form {
           this.props.history.replace({
             ...this.props.history,
             pathname: '/ui/login',
-            showErrorToast: true,
-            errorToastTitle: 'Login failed',
-            errorToastMessage: err.message,
             loading: false
           });
         });
@@ -59,9 +57,6 @@ class Login extends Form {
       history.replace({
         ...this.props.history,
         pathname: '/ui/login',
-        showErrorToast: true,
-        errorToastTitle: 'Login failed',
-        errorToastMessage: err.message,
         loading: false
       });
     }
@@ -72,23 +67,19 @@ class Login extends Form {
     const currentUserData = res.data;
 
     if (currentUserData.logged) {
-      localStorage.setItem('login', true);
-      localStorage.setItem('user', currentUserData.username);
-      localStorage.setItem('roles', organizeRoles(currentUserData.roles));
+      sessionStorage.setItem('login', true);
+      sessionStorage.setItem('user', currentUserData.username);
+      sessionStorage.setItem('roles', organizeRoles(currentUserData.roles));
+
       this.props.history.push({
         ...this.props.history,
         pathname: '/ui',
-        showSuccessToast: true,
-        successToastMessage: `User '${currentUserData.username}' logged in successfully`,
         loading: false
       });
+      window.location.reload(true);
+      toast.success(`User '${currentUserData.username}' logged in successfully`);
     } else {
       this.props.history.replace({
-        ...this.props.history,
-        pathname: '/ui/login',
-        showErrorToast: true,
-        errorToastTitle: 'Login failed',
-        errorToastMessage: 'Invalid credentials',
         loading: false
       });
     }
@@ -110,9 +101,6 @@ class Login extends Form {
             <div>
               <h3 className="logo">
                 <img src={logo} alt="" />
-                <sup>
-                  <strong>HQ</strong>
-                </sup>
               </h3>
             </div>
 

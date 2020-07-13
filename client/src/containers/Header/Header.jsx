@@ -4,10 +4,12 @@ import { Link, withRouter } from 'react-router-dom';
 import { organizeRoles } from '../../utils/converters';
 import { get, logout } from '../../utils/api';
 import { uriCurrentUser, uriLogout } from '../../utils/endpoints';
-
+import history from '../../utils/history';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 class Header extends Component {
   state = {
-    login: localStorage.getItem('login')
+    login: sessionStorage.getItem('login')
   };
 
   async logout() {
@@ -15,24 +17,22 @@ class Header extends Component {
       await logout(uriLogout());
       await get(uriCurrentUser()).then(res => {
         let currentUserData = res.data;
-        localStorage.setItem('login', currentUserData.logged);
-        localStorage.setItem('user', 'default');
-        localStorage.setItem('roles', organizeRoles(currentUserData.roles));
+        sessionStorage.setItem('login', currentUserData.logged);
+        sessionStorage.setItem('user', 'default');
+        sessionStorage.setItem('roles', organizeRoles(currentUserData.roles));
         this.setState({ login: currentUserData.logged }, () => {
-          window.location.reload(false);
           this.props.history.replace({
-            ...this.props.history,
-            showSuccessToast: true,
-            successToastMessage: 'Logged out successfully'
+            pathname: '/ui/login',
+            ...this.props.history
           });
+          window.location.reload(false);
+          toast.success('Logged out successfully');
         });
       });
-    } catch (err) {
-      if (err.status === 404) {
-        this.props.history.replace('/ui/page-not-found', { errorData: err });
-      } else {
-        this.props.history.replace('/ui/error', { errorData: err });
-      }
+    } finally {
+      history.replace({
+        loading: false
+      });
     }
   }
 

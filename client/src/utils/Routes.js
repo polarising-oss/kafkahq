@@ -12,7 +12,6 @@ import ConnectList from '../containers/ConnectList/ConnectList';
 import ConnectCreate from '../containers/ConnectList/ConnectCreate/ConnectCreate';
 import Connect from '../containers/ConnectList/Connect/Connect';
 import TopicCreate from '../containers/TopicList/TopicCreate/TopicCreate';
-import ErrorPage from '../containers/ErrorPage';
 import TopicProduce from '../containers/TopicList/Topic/TopicProduce';
 import Loading from '../containers/Loading';
 import ConsumerGroupList from '../containers/ConsumerGroupList';
@@ -23,31 +22,19 @@ import SchemaCreate from '../containers/SchemaList/SchemaCreate/SchemaCreate';
 import ConsumerGroupUpdate from '../containers/ConsumerGroupList/ConsumerGroup/ConsumerGroupUpdate';
 import AclDetails from '../containers/Acls/AclDetails';
 import Login from '../containers/Login';
-import PageNotFound from './../containers/PageNotFound/PageNotFound';
 
 class Routes extends Component {
   state = {};
   static propTypes = {
     location: PropTypes.object,
     history: PropTypes.object,
-    clusterId: PropTypes.string
-  };
-
-  //componentWillReceiveProps(nextProps) {}
-
-  static getDerivedStateFromProps = nextProps => {
-    if (nextProps.location.pathname !== '/ui/error') {
-      let routeObject = {
-        pathname: nextProps.location.pathname,
-        ...nextProps.history.location.state
-      };
-      localStorage.setItem('lastRoute', JSON.stringify(routeObject));
-    }
-    return {};
+    clusterId: PropTypes.string,
+    clusters: PropTypes.array
   };
 
   handleRedirect(clusterId) {
-    const roles = JSON.parse(localStorage.getItem('roles'));
+    const roles = JSON.parse(sessionStorage.getItem('roles'));
+    console.log('roles', roles);
     if (roles && roles.topic && roles.topic['topic/read']) return `/ui/${clusterId}/topic`;
     else if (roles && roles.node && roles.node['node/read']) return `/ui/${clusterId}/node`;
     else if (roles && roles.group && roles.group['group/read']) return `/ui/${clusterId}/group`;
@@ -59,10 +46,9 @@ class Routes extends Component {
   }
 
   render() {
-    const { location } = this.props;
-    const roles = JSON.parse(localStorage.getItem('roles')) || {};
+    const { location, clusters } = this.props;
+    const roles = JSON.parse(sessionStorage.getItem('roles')) || {};
     let path = window.location.pathname.split('/');
-
     let clusterId = '';
     if (path.length < 4 || path[2] === '') {
       clusterId = this.props.clusterId;
@@ -70,37 +56,20 @@ class Routes extends Component {
       clusterId = path[2];
     }
 
-    if (path[2] === 'error') {
+    if (path[2] === 'login') {
       return (
         <Switch>
-          <Route exact path="/ui/error" component={ErrorPage} />
-        </Switch>
-      );
-    }
-    if (path[2] === 'page-not-found') {
-      return (
-        <Switch>
-          <Route exact path="/ui/page-not-found" component={PageNotFound} />
+          <Route exact path="/ui/login" component={Login} />
         </Switch>
       );
     }
 
-    if (path[2] === ':login') {
+    if (clusterId && path.length > 0) {
       return (
-        <Switch>
-          <Route exact path="/ui/:login" component={Login} />
-        </Switch>
-      );
-    }
-
-    if (path.length > 0) {
-      return (
-        <Base>
+        <Base clusters={clusters}>
           <Switch location={location}>
-            <Route exact path="/ui/:login" component={Login} />
-            <Route exact path="/ui/page-not-found" component={PageNotFound} />
+            <Route exact path="/ui/login" component={Login} />
             {roles && roles.topic && roles.topic['topic/read'] && (
-              /*<Route exact path="/page-not-found" component={PageNotFound} /> */
               <Route exact path="/ui/:clusterId/topic" component={TopicList} />
             )}
             {roles && roles.topic && roles.topic['topic/insert'] && (

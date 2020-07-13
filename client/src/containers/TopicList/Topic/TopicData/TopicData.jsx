@@ -6,11 +6,11 @@ import Table from '../../../../components/Table/Table';
 import { get, remove } from '../../../../utils/api';
 import { formatDateTime } from '../../../../utils/converters';
 import {
-  uriTopicData,
-  uriTopicsPartitions,
-  uriTopicDataSearch,
   uriSchemaRegistry,
-  uriTopicDataDelete
+  uriTopicData,
+  uriTopicDataDelete,
+  uriTopicDataSearch,
+  uriTopicsPartitions
 } from '../../../../utils/endpoints';
 import CodeViewModal from '../../../../components/Modal/CodeViewModal/CodeViewModal';
 import Modal from '../../../../components/Modal/Modal';
@@ -25,7 +25,8 @@ import ConfirmModal from '../../../../components/Modal/ConfirmModal';
 import 'ace-builds/webpack-resolver';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-dracula';
-
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // Adaptation of data.ftl
 
 class TopicData extends React.Component {
@@ -59,7 +60,7 @@ class TopicData extends React.Component {
     cleanupPolicy: '',
     datetime: '',
     schemas: [],
-    roles: JSON.parse(localStorage.getItem('roles')),
+    roles: JSON.parse(sessionStorage.getItem('roles')),
     canDeleteRecords: false,
     percent: 0
   };
@@ -74,7 +75,6 @@ class TopicData extends React.Component {
     let { clusterId, topicId } = this.props.match.params;
     const { history } = this.props;
     const roles = this.state.roles || {};
-    console.log('state', this.state.selectedCluster, this.state.selectedTopic);
     this.setState(
       {
         selectedCluster: clusterId,
@@ -221,12 +221,6 @@ class TopicData extends React.Component {
           recordCount: data.size
         });
       }
-    } catch (err) {
-      if (err.status === 404) {
-        history.replace('/ui/page-not-found', { errorData: err });
-      } else {
-        history.replace('/ui/error', { errorData: err });
-      }
     } finally {
       history.replace({
         loading: false
@@ -272,10 +266,9 @@ class TopicData extends React.Component {
       .then(res => {
         this.props.history.replace({
           ...this.props.location,
-          showSuccessToast: true,
-          successToastMessage: `Record '${message}' will be deleted on compaction`,
           loading: false
         });
+        toast.success(`Record '${message}' will be deleted on compaction`);
         this.setState({ showDeleteModal: false, compactMessageToDelete: '' }, () => {
           this.getMessages();
         });
@@ -283,8 +276,6 @@ class TopicData extends React.Component {
       .catch(err => {
         this.props.history.replace({
           ...this.props.location,
-          showErrorToast: true,
-          errorToastMessage: `Failed to delete message from '${message}'`,
           loading: false
         });
         this.setState({ showDeleteModal: false, messageToDelete: {} });
