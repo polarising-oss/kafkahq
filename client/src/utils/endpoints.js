@@ -36,6 +36,10 @@ export const uriDeleteTopics = (clusterId, topicId) => {
   return `${apiUrl}/${clusterId}/topic/${topicId}`;
 };
 
+export const uriEmptyDataFromTopic = (clusterId, topicName) => {
+  return `${apiUrl}/${clusterId}}/topic/{${topicName}/data/empty`;
+};
+
 export const uriTopicData = (
   clusterId,
   topicId,
@@ -313,5 +317,6 @@ export default {
   uriAclsByPrincipal,
   uriLiveTail,
   uriTopicDataSearch,
-  uriTopicDataDelete
+  uriTopicDataDelete,
+  uriEmptyDataFromTopic
 };

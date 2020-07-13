@@ -7,7 +7,7 @@ import TopicConfigs from './TopicConfigs';
 import TopicAcls from './TopicAcls';
 import TopicLogs from './TopicLogs';
 import { get } from '../../../utils/api';
-import { uriTopicsConfigs } from '../../../utils/endpoints';
+import { uriTopicsConfigs, uriEmptyDataFromTopic } from '../../../utils/endpoints';
 
 class Topic extends Component {
   state = {
@@ -50,6 +50,15 @@ class Topic extends Component {
     try {
       configs = await get(uriTopicsConfigs(clusterId, topicId));
       this.setState({ configs: configs.data });
+    } catch (err) {
+      console.error('Error:', err);
+    }
+  }
+
+    async emptyTopic(){
+    const { clusterId, topicId } = this.state;
+    try {
+      await uriEmptyDataFromTopic(clusterId, topicId);
     } catch (err) {
       console.error('Error:', err);
     }
@@ -199,10 +208,14 @@ class Topic extends Component {
                 <i className="fa fa-fw fa-level-down" aria-hidden={true} /> Live Tail
               </div>
             </li>
-
             <a href={`/ui/${clusterId}/topic/${topicId}/produce`} className="btn btn-primary">
               <i className="fa fa-plus" aria-hidden={true} /> Produce to topic
             </a>
+          {roles.topic['topic/data/delete'] && (
+            <a className="btn btn-primary ml-2" onClick={() => this.emptyTopic()}>
+              <i className="fa fa-eraser" aria-hidden="true"></i> Empty Topic
+            </a>
+          )}
           </aside>
         )}
       </div>
